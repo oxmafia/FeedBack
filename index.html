@@ -88,13 +88,11 @@
         // Send form data to Google Apps Script web app endpoint
         fetch('https://script.google.com/macros/s/AKfycbysolQ0DcHXGLPlpZ4dAhAxCZIertKFoCwWxaupzjFqS2heDJab8lrGS3ZCppMGHcVS1w/exec', {
             method: 'POST',
-            mode: 'no-cors',  // Cross-origin request, no need for CORS headers in Google Apps Script
+            mode: 'no-cors', 
             body: JSON.stringify(formData)
         })
         .then(response => {
             console.log('Form data sent successfully');
-            
-           // alert("Report submitted successfully!");
         })
         .catch(error => {
             console.error('Error sending form data:', error);
