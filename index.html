@@ -33,6 +33,11 @@
             font-weight: normal;
             color: #676767;        
         }
+       label3 {
+            font-weight: normal;
+            color: #fff;    
+         max-height:20px;
+        }
       h1{
         color: #599A79;  
       }
@@ -57,8 +62,9 @@
 <body>
     <div class="container">
         <h1>feedback</h1>
-        <label2>Drop any information that could help us stop illegal logging or Poaching here</label2>
-        <div class="form-group">
+        <label2>Report any information that could help us stop illegal logging or Poaching here</label2>
+      <label3>Report </label3>
+      <div class="form-group">
             <label for="description">Description:</label>
             <textarea id="description" rows="2"></textarea>    </div>
         <div class="form-group">
@@ -88,12 +94,13 @@
         // Send form data to Google Apps Script web app endpoint
         fetch('https://script.google.com/macros/s/AKfycbysolQ0DcHXGLPlpZ4dAhAxCZIertKFoCwWxaupzjFqS2heDJab8lrGS3ZCppMGHcVS1w/exec', {
             method: 'POST',
-            mode: 'no-cors', 
+            mode: 'no-cors',  // Cross-origin request, no need for CORS headers in Google Apps Script
             body: JSON.stringify(formData)
         })
         .then(response => {
             console.log('Form data sent successfully');
-            alert("Report submitted successfully!");
+            
+           // alert("Report submitted successfully!");
         })
         .catch(error => {
             console.error('Error sending form data:', error);
