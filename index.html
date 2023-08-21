@@ -108,5 +108,323 @@
         });
     }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Card Stack</title>
+  <style>
+    *{
+  box-sizing:border-box;
+}
+
+.swipable-area{
+  padding:80px 0;
+}
+
+
+.stack {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  position:relative;
+  margin:40px auto 0;
+  width:300px;
+  height:300px;
+  box-shadow: 0px -5px 0px -2.5px #eee, 
+              0px -10px 0px -5px #559978,
+              0px -15px 0px -7.5px #eee, 
+              0px -20px 0px -10px #559978;
+}
+.card {
+  position:absolute;
+  top:0;
+  left:0;
+  width:300px;
+  height:300px;
+  margin:0 auto;
+  transition:transform 0.2s, box-shadow 0.125s ease-in-out;
+  transform-origin:80% 100%;
+  background: #fff;
+  color: #000000;
+  border: 3px solid transparent;
+  border-image: linear-gradient(90deg, #001589,#0182ca);
+  border-image-slice:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  
+  &.active{
+    &.wiggle{
+      transform:translateX(20px) rotate(5deg);
+      animation:wiggle 3s infinite; 
+      &:hover{
+        box-shadow:  0 0 5px #001589;
+      }
+    }
+  }
+  
+  img{
+    max-width:100%;
+    margin:0 auto;
+  }
+  
+  h1, p{
+    padding:0px 10px;
+    color: #000000;
+  }
+  
+  &:hover{
+ 
+  }
+}
+
+
+@keyframes wiggle {
+  0%, 24%, 48%, 100% { transform: translateX(20px) rotate(5deg); }
+  12%, 36%  { transform: translateX(25px) rotate(7.5deg) ; }
+}
+
+.debug {
+  display: none;
+}
+  </style>
+</head>
+<body>
+  <div class="swipable-area">
+    <div class="stack" id="cardStack"></div>
+  </div>
+  <div class="debug">
+    <hr>
+    <p class="walk"></p>
+  </div>
+  
+  <script>
+    
+    
+    
+     const track = document.querySelector('.swipable-area');
+  const stack = document.querySelector('.stack');
+  let active;
+  let startX;
+  let walk = 0;
+  const maxWalk = 250;
+  const trigger = 200;
+  let isClicked = false;
+
+  function init(cards, z) {
+    Array.from(cards).forEach(function (card, i) {
+      card.style.setProperty('z-index', card.dataset.zindex);
+      if (z === deckSize) {
+        card.classList.add('active');
+        card.classList.add('wiggle');
+        addEvents(card, track);
+      }
+      z -= 1;
+    });
+    active = stack.querySelector('.active');
+  }
+
+    
+    function moveToBack(){
+  Array.from(cards).forEach(function (card){
+  //cards.forEach(function(card){
+    var z = parseInt(card.style.getPropertyValue('z-index'));
+    if(z === deckSize){
+      card.style.setProperty('z-index', 0);
+      card.classList.remove('active');
+    } else {
+      card.style.setProperty('z-index', z + 1);
+      if (z + 1 === deckSize){
+        card.classList.add('active');
+        addEvents(card, track);
+      }
+    }
+  });
+}
+
+function addEvents(element, track){
+  console.log('addEvents', element, track);
+  element.addEventListener('mousedown', mouseDownEvent); 
+  track.addEventListener('mouseup', mouseUpEvent);
+  track.addEventListener('mouseleave', mouseLeaveEvent);
+  track.addEventListener('mousemove', mouseMoveEvent);
+    
+  element.addEventListener('touchstart', mouseDownEvent); 
+  element.addEventListener('touchend', mouseUpEvent);
+  element.addEventListener('touchmove', mouseMoveEvent);
+}
+
+function removeEvents(element, track){
+  console.log('removeEvents');
+  element.removeEventListener('mousedown', mouseDownEvent); 
+  track.removeEventListener('mouseup', mouseUpEvent);
+  track.removeEventListener('mouseleave', mouseLeaveEvent);
+  track.removeEventListener('mousemove', mouseMoveEvent);
+  
+  element.removeEventListener('touchstart', mouseDownEvent); 
+  element.removeEventListener('touchend', mouseUpEvent);
+  element.removeEventListener('touchmove', mouseMoveEvent);
+}
+
+function mouseDownEvent(e){
+  console.log('mouse down event');
+  isClicked = true;
+  this.classList.add('swiping');
+  this.classList.remove('wiggle');
+  startX = e.pageX - this.offsetLeft
+  console.log(isClicked, startX);
+}
+
+function mouseUpEvent(e){
+  console.log('mouse up event');
+  const swiping = document.querySelector('.swiping');
+  if(walk > 200){
+    //pause any video playing
+    const vids = swiping.querySelectorAll('video');
+    Array.from(vids).forEach(function(vid){
+      vid['pause']();
+    });
+    removeEvents(swiping, track);
+    moveToBack();
+    swiping.classList.remove('swiping');
+    console.log('walk over 200, lets moveToBack');
+  } else {
+    swiping.classList.add('wiggle');
+  }
+  walk = 0;
+  isClicked = false;
+  animateCard(swiping, walk);
+}
+
+function mouseLeaveEvent(e){
+  if(isClicked){
+    console.log('mouseleaveevent', e);
+    const swiping = document.querySelector('.swiping');
+    if(walk > trigger){
+      removeEvents(swiping, track);
+      moveToBack();
+    } else {
+      swiping.classList.add('wiggle');
+    }
+    swiping.classList.remove('swiping');
+    walk = 0;
+    isClicked = false;
+    animateCard(swiping, walk);
+  }
+}
+
+function mouseMoveEvent(e, card){
+  if(isClicked){
+    const swiping = document.querySelector('.swiping');
+    const currentX = e.pageX;
+    let x = currentX - swiping.offsetLeft;
+    if (x > startX){
+      walk = x - startX;
+      animateCard(swiping, walk);
+      
+      //for debug only
+      var update = document.querySelector('.walk');
+      update.innerText = walk;
+    }
+  }
+}
+
+function animateCard(element, walk){
+  var translate = (walk > maxWalk ? maxWalk : walk);
+  var rotate = (translate / maxWalk) * 25;
+  element.style.setProperty('transform', 'translateX(' + translate + 'px) rotate(' + rotate + 'deg)');
+}
+
+    
+    
+    
+    const deckSize = 5; // Update the deck size as needed
+
+    async function loadCardData() {
+      // Dummy JSON data for testing
+      const dummyData = [
+        { "type": "text", "value": "Hello" },
+        { "type": "image", "value": "https://placekitten.com/g/300/300" },
+        { "type": "text", "value": "You can put anything you want in here" },
+        {
+          "type": "video",
+          "value": {
+            "src": "http://www.outerplaces.com/vidrss/uploads/nuclear_fusion7qv8c2fwz8.mp4",
+            "poster": "",
+            "text": "Videos, images, audio, etc."
+          }
+        },
+        { "type": "text", "value": "Great for lists, image galleries, collections of tweets, etc" },
+        { "type": "image", "value": "https://placebear.com/300/300" }
+      ];
+
+      const cardStack = document.getElementById('cardStack');
+
+      dummyData.forEach((card, index) => {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card');
+        cardElement.dataset.zindex = deckSize - index; // Adjust z-index based on your requirements
+
+        if (card.type === 'image') {
+          const imgElement = document.createElement('img');
+          imgElement.src = card.value;
+          imgElement.alt = '';
+          imgElement.draggable = false;
+          cardElement.appendChild(imgElement);
+        } else if (card.type === 'text') {
+          const textElement = document.createElement('p');
+          textElement.textContent = card.value;
+          cardElement.appendChild(textElement);
+        } else if (card.type === 'video') {
+          const videoElement = document.createElement('video');
+          videoElement.controls = true;
+          videoElement.width = 300;
+          videoElement.src = card.value.src;
+          videoElement.poster = card.value.poster;
+          const textElement = document.createElement('p');
+          textElement.textContent = card.value.text;
+          cardElement.appendChild(videoElement);
+          cardElement.appendChild(textElement);
+        }
+
+        cardStack.appendChild(cardElement);
+      });
+
+      const cards = cardStack.querySelectorAll('.card');
+      init(cards, deckSize);
+    }
+
+        
+    loadCardData();
+  
+  </script>
+</body>
+</html>
+
+
+
+    
 </body>
 </html>
