@@ -103,26 +103,20 @@ const track = document.querySelector('.swipable-area');
  // 😜😢😢😢😜😜😜
        
     
-  var deckSize = 5; // Update the deck size as needed
+  
 
     async function loadCardData() {
       // Dummy JSON data for testing
       const dummyData = [
         { "type": "text", "value": "Hello, this is the start of your card, swap left to know more about this place" },
-        { "type": "image", "value": "https://placekitten.com/g/200/200" },
+        { "type": "text", "value": "you think you can win? dey play" },
         { "type": "text", "value": "You can put anything you want in here" },
-        {
-          "type": "video",
-          "value": {
-            "src": "http://www.outerplaces.com/vidrss/uploads/nuclear_fusion7qv8c2fwz8.mp4",
-            "poster": "",
-            "text": "Videos, images, audio, etc."
-          }
-        },
         { "type": "text", "value": "Great for lists, image galleries, collections of tweets, etc" },
-        { "type": "image", "value": "https://placebear.com/200/200" }
+        { "type": "text", "value": "just dey play " }
       ];
 
+      var deckSize = 4; // Update the deck size as needed
+      
       const cardStack = document.getElementById('stack');
 
       dummyData.forEach((card, index) => {
@@ -206,7 +200,7 @@ function addEvents(element, track){
   track.addEventListener('mouseup', mouseUpEvent);
   track.addEventListener('mouseleave', mouseLeaveEvent);
   track.addEventListener('mousemove', mouseMoveEvent);
-    
+  
   element.addEventListener('touchstart', mouseDownEvent); 
   element.addEventListener('touchend', mouseUpEvent);
   element.addEventListener('touchmove', mouseMoveEvent);
@@ -224,6 +218,7 @@ function removeEvents(element, track){
   element.removeEventListener('touchmove', mouseMoveEvent);
 }
 
+  
 function mouseDownEvent(e){
   console.log('mouse down event');
   isClicked = true;
@@ -236,7 +231,7 @@ function mouseDownEvent(e){
 function mouseUpEvent(e){
   console.log('mouse up event');
   const swiping = document.querySelector('.swiping');
-  if(walk > 200){
+  if(walk > 10){
     //pause any video playing
     const vids = swiping.querySelectorAll('video');
     Array.from(vids).forEach(function(vid){
@@ -287,66 +282,18 @@ function mouseMoveEvent(e, card){
   }
 }
 
-function animateCard(element, walk){
+ 
+  function animateCard(element, walk){
   var translate = (walk > maxWalk ? maxWalk : walk);
   var rotate = (translate / maxWalk) * 25;
   element.style.setProperty('transform', 'translateX(' + translate + 'px) rotate(' + rotate + 'deg)');
 }
 
-init(cards, deckSize);
-
-//disable image dragging 
-Array.from(cards).forEach(function (card){
-// cards.forEach(card => {
-  Array.from(card.querySelectorAll('img')).forEach(img => img.ondragstart = function(){return false;})
-})
-document.querySelectorAll('img').ondragstart = function() { return false; };
-
   
+init(cards, deckSize);  
   
-        function touchStartEvent(e) {
-            isClicked = true;
-            this.classList.add('swiping');
-            this.classList.remove('wiggle');
-            startX = e.touches[0].pageX - this.offsetLeft;
-        }
 
-        function touchEndEvent(e) {
-            const swiping = document.querySelector('.swiping');
-            if (walk > 200) {
-                // ... your existing code ...
-                console.log('walk over 200, lets moveToBack');
-            } else {
-                swiping.classList.add('wiggle');
-            }
-            walk = 0;
-            isClicked = false;
-            animateCard(swiping, walk);
-        }
-
-        function touchMoveEvent(e) {
-            if (isClicked) {
-                const swiping = document.querySelector('.swiping');
-                const currentX = e.touches[0].pageX;
-                let x = currentX - swiping.offsetLeft;
-                if (x > startX) {
-                    walk = x - startX;
-                    animateCard(swiping, walk);
-                }
-            }
-        }
-
-        // Disable image dragging on touch devices
-        Array.from(cards).forEach(function (card) {
-            Array.from(card.querySelectorAll('img')).forEach(img => {
-                img.ondragstart = function () {
-                    return false;
-                };
-                img.ontouchstart = function (e) {
-                    e.preventDefault(); // Prevent default touch behavior (e.g., zooming)
-                };
-            });
-        });
+      
   </script>
   
   
@@ -358,49 +305,31 @@ document.querySelectorAll('img').ondragstart = function() { return false; };
   
   
       <style>
-        body { 
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
-            background-color: #fff;
-        }
-        .container {
-            width: 80vw;
-            margin: auto;
-          transform: translateY(50px);
-            background-color: #fff;
-            padding: 8px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
-        }
+       body{
+ background-color: #fff;
+}
+        
         .form-group {
-            margin: 20px;
+            margin-left: 20px;
+          margin-right: 20px;
         }
         label {
             font-weight: normal;
-            font-size: 85%;
-            color: #9e9e9e;
+            font-size: 13px;
+            color: #fff;
            
         }
-      label2 {
-        font-size: 85%;
-            font-weight: normal;
-            color: #676767;        
-        }
-       label3 {
-            font-weight: normal;
-            color: #fff;    
-         max-height:20px;
-        }
-
-        input, textarea {
+      
+        textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #9e9e9e;
-            border-radius: 50px;
+            padding: 0px;
+            margin-bottom: 10px;
+            background-color: #f4f4f4;
+            border: 1px solid #f2f2f2;
+            border-radius: 10px;
         }
         button {
-            background-color: #559978;
+            background-color: #000;
             color: #ffffff;
             padding: 10px 20px;
             margin-bottom: 50px;
@@ -413,17 +342,12 @@ document.querySelectorAll('img').ondragstart = function() { return false; };
     </style>
 </head>
 <body>
-    <div class="container">
-        
-        <label2>Report any information that could help us stop illegal logging or Poaching here</label2>
-      <label3>Report </label3>
+   <div class="container">
+       
       <div class="form-group">
             <label for="description">Description:</label>
-            <textarea id="description" rows="2"></textarea>    </div>
-        <div class="form-group">
-            <label for="location">Location:</label>
-            <input type="text" id="location">
-        </div>
+            <textarea id="description" rows="5"></textarea>    </div>
+      
         <center><button onclick="submitReport()">Submit Report</button>
  </div>
     <script>
@@ -433,11 +357,12 @@ document.querySelectorAll('img').ondragstart = function() { return false; };
         
       // Reset the form
             document.getElementById("description").value = "";
-            document.getElementById("location").value = "";
+      // Get the current timestamp
+            const timestamp = new Date().toISOString();
       
         const formData = {
             description: description,
-            location: location
+            time: timestamp
         };
 
         // Send form data to Google Apps Script web app endpoint
@@ -457,5 +382,11 @@ document.querySelectorAll('img').ondragstart = function() { return false; };
         });
     }
 </script>
+
+
+
+
+
+
 </body>
 </html>
