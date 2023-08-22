@@ -4,114 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Illegal Logging Reporting</title>
-    <style>
-        body { 
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
-            background-color: #fff;
-        }
-        .container {
-            width: 80vw;
-            margin: auto;
-          transform: translateY(50px);
-            background-color: #fff;
-            padding: 8px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: normal;
-            font-size: 85%;
-            color: #9e9e9e;
-           
-        }
-      label2 {
-            font-weight: normal;
-            color: #676767;        
-        }
-       label3 {
-            font-weight: normal;
-            color: #fff;    
-         max-height:20px;
-        }
-      h1{
-        color: #599A79;  
-      }
-        input, textarea {
-            width: 80%;
-            padding: 10px;
-            border: 1px solid #9e9e9e;
-            border-radius: 10px;
-        }
-        button {
-            background-color: #559978;
-            color: #ffffff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            min-width: 40vw
-         
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>feedback</h1>
-        <label2>Report any information that could help us stop illegal logging or Poaching here</label2>
-      <label3>Report </label3>
-      <div class="form-group">
-            <label for="description">Description:</label>
-            <textarea id="description" rows="2"></textarea>    </div>
-        <div class="form-group">
-            <label for="location">Location:</label>
-            <input type="text" id="location">
-        </div>
-        <div class="form-group">
-            <label for="image">Image:</label>
-            <input type="file" id="image">
-        </div>
-        <button onclick="submitReport()">Submit Report</button>
- </div>
-    <script>
-    function submitReport() {
-        const description = document.getElementById("description").value;
-        const location = document.getElementById("location").value;
-        
-      // Reset the form
-            document.getElementById("description").value = "";
-            document.getElementById("location").value = "";
-      
-        const formData = {
-            description: description,
-            location: location
-        };
-
-        // Send form data to Google Apps Script web app endpoint
-        fetch('https://script.google.com/macros/s/AKfycbysolQ0DcHXGLPlpZ4dAhAxCZIertKFoCwWxaupzjFqS2heDJab8lrGS3ZCppMGHcVS1w/exec', {
-            method: 'POST',
-            mode: 'no-cors',  // Cross-origin request, no need for CORS headers in Google Apps Script
-            body: JSON.stringify(formData)
-        })
-        .then(response => {
-            console.log('Form data sent successfully');
-            
-           // alert("Report submitted successfully!");
-        })
-        .catch(error => {
-            console.error('Error sending form data:', error);
-            alert("An error occurred while submitting the report.");
-        });
-    }
-</script>
-
-
-
-
 
 
 
@@ -140,8 +32,8 @@
 
   position:relative;
   margin:40px auto 0;
-  width:40vw;
-  height:40vw;
+  width:200px;
+  height:200px;
   box-shadow: 0px -5px 0px -2.5px #eee, 
               0px -10px 0px -5px #559978,
               0px -15px 0px -7.5px #eee, 
@@ -151,8 +43,8 @@
   position:absolute;
   top:0;
   left:0;
-  width:40vw;
-  height:40vw;
+  width:200px;
+  height:200px;
   margin:0 auto;
   transition:transform 0.2s, box-shadow 0.125s ease-in-out;
   transform-origin:80% 100%;
@@ -409,6 +301,125 @@ function animateCard(element, walk){
         
     loadCardData();
   
-  </script>    
+  </script>   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <style>
+        body { 
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #fff;
+        }
+        .container {
+            width: 80vw;
+            margin: auto;
+          transform: translateY(50px);
+            background-color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: normal;
+            font-size: 85%;
+            color: #9e9e9e;
+           
+        }
+      label2 {
+            font-weight: normal;
+            color: #676767;        
+        }
+       label3 {
+            font-weight: normal;
+            color: #fff;    
+         max-height:20px;
+        }
+      h1{
+        color: #599A79;  
+      }
+        input, textarea {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #9e9e9e;
+            border-radius: 10px;
+        }
+        button {
+            background-color: #559978;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            min-width: 40vw
+         
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>feedback</h1>
+        <label2>Report any information that could help us stop illegal logging or Poaching here</label2>
+      <label3>Report </label3>
+      <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" rows="2"></textarea>    </div>
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" id="location">
+        </div>
+        <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="file" id="image">
+        </div>
+        <button onclick="submitReport()">Submit Report</button>
+ </div>
+    <script>
+    function submitReport() {
+        const description = document.getElementById("description").value;
+        const location = document.getElementById("location").value;
+        
+      // Reset the form
+            document.getElementById("description").value = "";
+            document.getElementById("location").value = "";
+      
+        const formData = {
+            description: description,
+            location: location
+        };
+
+        // Send form data to Google Apps Script web app endpoint
+        fetch('https://script.google.com/macros/s/AKfycbysolQ0DcHXGLPlpZ4dAhAxCZIertKFoCwWxaupzjFqS2heDJab8lrGS3ZCppMGHcVS1w/exec', {
+            method: 'POST',
+            mode: 'no-cors',  // Cross-origin request, no need for CORS headers in Google Apps Script
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            console.log('Form data sent successfully');
+            
+           // alert("Report submitted successfully!");
+        })
+        .catch(error => {
+            console.error('Error sending form data:', error);
+            alert("An error occurred while submitting the report.");
+        });
+    }
+</script>
+
+
+
+
+
 </body>
 </html>
