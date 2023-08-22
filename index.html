@@ -344,8 +344,6 @@ init(cards, deckSize);
             border-radius: 50px;
             cursor: pointer;
             min-width: 50vw;
-           
-         
         }
     </style>
 </head>
@@ -407,10 +405,7 @@ init(cards, deckSize);
     console.error('Geolocation not supported');
     alert("Geolocation is not supported in this browser.");
   }
-}
-
-
-        // Send form data to Google Apps Script web app endpoint
+}      // Send form data to Google Apps Script web app endpoint
         fetch('https://script.google.com/macros/s/AKfycbysolQ0DcHXGLPlpZ4dAhAxCZIertKFoCwWxaupzjFqS2heDJab8lrGS3ZCppMGHcVS1w/exec', {
             method: 'POST',
             mode: 'no-cors',  // Cross-origin request, no need for CORS headers in Google Apps Script
@@ -427,7 +422,5 @@ init(cards, deckSize);
         });
     }
 </script>
-
-
 </body>
 </html>
