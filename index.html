@@ -248,7 +248,7 @@ function animateCard(element, walk){
       // Dummy JSON data for testing
       const dummyData = [
         { "type": "text", "value": "Hello" },
-        { "type": "image", "value": "https://placekitten.com/g/300/300" },
+        { "type": "image", "value": "https://placekitten.com/g/200/200" },
         { "type": "text", "value": "You can put anything you want in here" },
         {
           "type": "video",
@@ -259,7 +259,7 @@ function animateCard(element, walk){
           }
         },
         { "type": "text", "value": "Great for lists, image galleries, collections of tweets, etc" },
-        { "type": "image", "value": "https://placebear.com/300/300" }
+        { "type": "image", "value": "https://placebear.com/200/200" }
       ];
 
       const cardStack = document.getElementById('cardStack');
@@ -282,7 +282,7 @@ function animateCard(element, walk){
         } else if (card.type === 'video') {
           const videoElement = document.createElement('video');
           videoElement.controls = true;
-          videoElement.width = 300;
+          videoElement.width = 200;
           videoElement.src = card.value.src;
           videoElement.poster = card.value.poster;
           const textElement = document.createElement('p');
