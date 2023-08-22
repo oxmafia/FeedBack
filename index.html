@@ -301,7 +301,53 @@ Array.from(cards).forEach(function (card){
   Array.from(card.querySelectorAll('img')).forEach(img => img.ondragstart = function(){return false;})
 })
 document.querySelectorAll('img').ondragstart = function() { return false; };
-</script>
+
+  
+  
+        function touchStartEvent(e) {
+            isClicked = true;
+            this.classList.add('swiping');
+            this.classList.remove('wiggle');
+            startX = e.touches[0].pageX - this.offsetLeft;
+        }
+
+        function touchEndEvent(e) {
+            const swiping = document.querySelector('.swiping');
+            if (walk > 200) {
+                // ... your existing code ...
+                console.log('walk over 200, lets moveToBack');
+            } else {
+                swiping.classList.add('wiggle');
+            }
+            walk = 0;
+            isClicked = false;
+            animateCard(swiping, walk);
+        }
+
+        function touchMoveEvent(e) {
+            if (isClicked) {
+                const swiping = document.querySelector('.swiping');
+                const currentX = e.touches[0].pageX;
+                let x = currentX - swiping.offsetLeft;
+                if (x > startX) {
+                    walk = x - startX;
+                    animateCard(swiping, walk);
+                }
+            }
+        }
+
+        // Disable image dragging on touch devices
+        Array.from(cards).forEach(function (card) {
+            Array.from(card.querySelectorAll('img')).forEach(img => {
+                img.ondragstart = function () {
+                    return false;
+                };
+                img.ontouchstart = function (e) {
+                    e.preventDefault(); // Prevent default touch behavior (e.g., zooming)
+                };
+            });
+        });
+  </script>
   
   
   
