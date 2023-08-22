@@ -360,18 +360,55 @@ init(cards, deckSize);
  </div>
     <script>
     function submitReport() {
-        const description = document.getElementById("description").value;
-        const location = document.getElementById("location").value;
-        
-      // Reset the form
-            document.getElementById("description").value = "";
-      // Get the current timestamp
-            const timestamp = new Date().toISOString();
-      
-        const formData = {
-            description: description,
-            time: timestamp
+  const description = document.getElementById("description").value;
+
+  // Get the current timestamp
+  const timestamp = new Date().toISOString();
+
+  // Get the device's location using the Geolocation API
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const current_location = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
         };
+
+        // Create the formData object
+        const formData = {
+          description: description,
+          time: timestamp,
+          location: current_location
+        };
+
+        // Send form data to Google Apps Script web app endpoint
+        fetch('https://script.google.com/macros/s/AKfycbysolQ0DcHXGLPlpZ4dAhAxCZIertKFoCwWxaupzjFqS2heDJab8lrGS3ZCppMGHcVS1w/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          body: JSON.stringify(formData)
+        })
+          .then(response => {
+            console.log('Form data sent successfully');
+          })
+          .catch(error => {
+            console.error('Error sending form data:', error);
+            alert("An error occurred while submitting the report.");
+          });
+
+        // Reset the form
+        document.getElementById("description").value = "";
+      },
+      error => {
+        console.error('Error getting location:', error);
+        alert("An error occurred while getting the location.");
+      }
+    );
+  } else {
+    console.error('Geolocation not supported');
+    alert("Geolocation is not supported in this browser.");
+  }
+}
+
 
         // Send form data to Google Apps Script web app endpoint
         fetch('https://script.google.com/macros/s/AKfycbysolQ0DcHXGLPlpZ4dAhAxCZIertKFoCwWxaupzjFqS2heDJab8lrGS3ZCppMGHcVS1w/exec', {
