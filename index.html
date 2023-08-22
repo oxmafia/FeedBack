@@ -102,34 +102,96 @@
     <p class="walk"></p>
   </div>
   
-  <script>
-    
-    
-    
-     const track = document.querySelector('.swipable-area');
-  const stack = document.querySelector('.stack');
-  let active;
-  let startX;
-  let walk = 0;
-  const maxWalk = 250;
-  const trigger = 200;
-  let isClicked = false;
+<script>
+const track = document.querySelector('.swipable-area');
+//const stack = document.querySelector('.stack');
 
-  function init(cards, z) {
-    Array.from(cards).forEach(function (card, i) {
-      card.style.setProperty('z-index', card.dataset.zindex);
-      if (z === deckSize) {
-        card.classList.add('active');
-        card.classList.add('wiggle');
-        addEvents(card, track);
-      }
-      z -= 1;
-    });
-    active = stack.querySelector('.active');
-  }
-
+//
+  
+ // 😜😢😢😢😜😜😜
+       
     
-    function moveToBack(){
+  var deckSize = 5; // Update the deck size as needed
+
+    async function loadCardData() {
+      // Dummy JSON data for testing
+      const dummyData = [
+        { "type": "text", "value": "Hello, this is the start of your card, swap left to know more about this place" },
+        { "type": "image", "value": "https://placekitten.com/g/200/200" },
+        { "type": "text", "value": "You can put anything you want in here" },
+        {
+          "type": "video",
+          "value": {
+            "src": "http://www.outerplaces.com/vidrss/uploads/nuclear_fusion7qv8c2fwz8.mp4",
+            "poster": "",
+            "text": "Videos, images, audio, etc."
+          }
+        },
+        { "type": "text", "value": "Great for lists, image galleries, collections of tweets, etc" },
+        { "type": "image", "value": "https://placebear.com/200/200" }
+      ];
+
+      const cardStack = document.getElementById('stack');
+
+      dummyData.forEach((card, index) => {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card');
+        cardElement.dataset.zindex = deckSize - index; // Adjust z-index based on your requirements
+
+        if (card.type === 'image') {
+          const imgElement = document.createElement('img');
+          imgElement.src = card.value;
+          imgElement.alt = '';
+          imgElement.draggable = false;
+          cardElement.appendChild(imgElement);
+        } else if (card.type === 'text') {
+          const textElement = document.createElement('p');
+          textElement.textContent = card.value;
+          cardElement.appendChild(textElement);
+        }
+
+        cardStack.appendChild(cardElement);
+      });
+
+     const cards = cardStack.querySelectorAll('.card');
+     init(cards, deckSize);
+    }
+
+        
+    loadCardData();
+  
+  var cards = stack.querySelectorAll('.card');
+  var deckSize = cards.length - 1;
+      
+   // 😜😢😢😢😜😜😜
+  
+  
+  
+  
+let active;
+let startX;
+let walk = 0;
+// const maxWalk = track.offsetWidth / 2; 
+const maxWalk = 250; //how var the card will translateX
+const trigger = 200; //trigger moveToBack at 200px swiped
+let isClicked = false;
+
+function init(cards, z) {
+  Array.from(cards).forEach(function (card, i){
+  //cards.forEach(function (card, i) {
+    // card.style.setProperty('z-index', z);
+    card.style.setProperty('z-index', card.dataset.zindex);
+    if (z === deckSize){
+      card.classList.add('active');
+      card.classList.add('wiggle');
+      addEvents(card, track);
+    }
+    z -= 1;
+  });
+  active = stack.querySelector('.active');
+}
+
+function moveToBack(){
   Array.from(cards).forEach(function (card){
   //cards.forEach(function(card){
     var z = parseInt(card.style.getPropertyValue('z-index'));
@@ -239,70 +301,15 @@ function animateCard(element, walk){
   element.style.setProperty('transform', 'translateX(' + translate + 'px) rotate(' + rotate + 'deg)');
 }
 
-    
-    
-    
-    const deckSize = 5; // Update the deck size as needed
+init(cards, deckSize);
 
-    async function loadCardData() {
-      // Dummy JSON data for testing
-      const dummyData = [
-        { "type": "text", "value": "Hello, this is the start of your card, swap left to know more about this place" },
-        { "type": "image", "value": "https://placekitten.com/g/200/200" },
-        { "type": "text", "value": "You can put anything you want in here" },
-        {
-          "type": "video",
-          "value": {
-            "src": "http://www.outerplaces.com/vidrss/uploads/nuclear_fusion7qv8c2fwz8.mp4",
-            "poster": "",
-            "text": "Videos, images, audio, etc."
-          }
-        },
-        { "type": "text", "value": "Great for lists, image galleries, collections of tweets, etc" },
-        { "type": "image", "value": "https://placebear.com/200/200" }
-      ];
-
-      const cardStack = document.getElementById('cardStack');
-
-      dummyData.forEach((card, index) => {
-        const cardElement = document.createElement('div');
-        cardElement.classList.add('card');
-        cardElement.dataset.zindex = deckSize - index; // Adjust z-index based on your requirements
-
-        if (card.type === 'image') {
-          const imgElement = document.createElement('img');
-          imgElement.src = card.value;
-          imgElement.alt = '';
-          imgElement.draggable = false;
-          cardElement.appendChild(imgElement);
-        } else if (card.type === 'text') {
-          const textElement = document.createElement('p');
-          textElement.textContent = card.value;
-          cardElement.appendChild(textElement);
-        } else if (card.type === 'video') {
-          const videoElement = document.createElement('video');
-          videoElement.controls = true;
-          videoElement.width = 200;
-          videoElement.src = card.value.src;
-          videoElement.poster = card.value.poster;
-          const textElement = document.createElement('p');
-          textElement.textContent = card.value.text;
-          cardElement.appendChild(videoElement);
-          cardElement.appendChild(textElement);
-        }
-
-        cardStack.appendChild(cardElement);
-      });
-
-      const cards = cardStack.querySelectorAll('.card');
-      init(cards, deckSize);
-    }
-
-        
-    loadCardData();
-  
-  </script>   
-  
+//disable image dragging 
+Array.from(cards).forEach(function (card){
+// cards.forEach(card => {
+  Array.from(card.querySelectorAll('img')).forEach(img => img.ondragstart = function(){return false;})
+})
+document.querySelectorAll('img').ondragstart = function() { return false; };
+</script>
   
   
   
